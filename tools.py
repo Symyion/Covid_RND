@@ -10,27 +10,30 @@ def transpose_data(raw_data):
 
 
 class OptionChainConverter:
-    def __init__(self, csv_data_path='data/data.csv'):
+    def __init__(self, csv_data_path):
         self.path = csv_data_path
         self.data = transpose_data(pd.read_csv(self.path, header=[0, 1], dtype='str'))
 
-    def get_all(self, data_path="data/chains.xlsx", write_excel=False):
+    def get_all(self, data_path="data/output/all_chains.xlsx", write_excel=False):
         if write_excel:
             self.data.to_excel(data_path, index=False)
+            print('All chains saved to all_chains.xlsx')
         return self.data
 
-    def get_calls(self, call_path='data/calls.xlsx', write_excel=False):
+    def get_calls(self, call_path='data/output/call_chains.xlsx', write_excel=False):
         calls = self.data[self.data.chain_id.str.contains('#C', regex=True, na=False)]
 
         if write_excel:
             calls.to_excel(call_path, index=False)
+            print('Call chains saved to output/call_chains.xlsx')
         return calls
 
-    def get_puts(self, put_path='data/put.xlsx', write_excel=False):
+    def get_puts(self, put_path='data/output/put_chains.xlsx', write_excel=False):
         puts = self.data[self.data.chain_id.str.contains('#P', regex=True, na=False)]
 
         if write_excel:
             puts.to_excel(put_path, index=False)
+            print('Put chains saved to output/put_chains.xlsx')
         return puts
 
 
